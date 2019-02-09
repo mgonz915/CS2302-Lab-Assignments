@@ -1,0 +1,40 @@
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+import math
+
+def circle(center,rad):
+    n = int(4*rad*math.pi)
+    t = np.linspace(0,6.3,n)
+    x = center[0]+rad*np.sin(t)
+    y = center[1]+rad*np.cos(t)
+    return x,y
+
+
+def circle_in_circle(ax,n,xcenter,ycenter,radius):
+    if n>0:
+        center = [xcenter,ycenter]
+        x,y = circle(center,radius)
+        ax.plot(x,y,color='k')
+        xleft = xcenter + (radius*(2/3))
+        xrigth = xcenter - (radius*(2/3))
+        ytop = ycenter + (radius*(2/3))
+        ybot = ycenter - (radius*(2/3))
+        radius = radius/3
+        circle_in_circle(ax,n-1,xcenter,ycenter,radius)
+        circle_in_circle(ax,n-1,xleft,ycenter,radius)
+        circle_in_circle(ax,n-1,xrigth,ycenter,radius)
+        circle_in_circle(ax,n-1,xcenter,ytop,radius)
+        circle_in_circle(ax,n-1,xcenter,ybot,radius)
+        
+plt.close("all") 
+fig, ax = plt.subplots()
+xcenter = 0
+ycenter = 0
+circle_in_circle(ax, 3, xcenter,ycenter, 1000)
+ax.set_aspect(1.0)
+ax.axis('off')
+plt.show()
+fig.savefig('circles_in_circles.png')        
+        
