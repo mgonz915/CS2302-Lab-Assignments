@@ -1,0 +1,29 @@
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+def tree_recursion(ax,n,x,y,p,r):
+    if n>0:
+        ax.plot(p[:,0],p[:,1],color='k')
+        xleft = x-r
+        xrigth = x+r
+        ydown = y-1
+    
+        p = np.array([[x,y],[xleft,ydown]])
+        tree_recursion(ax,n-1,xleft,ydown,p,r*.5)
+        p = np.array([[x,y],[xrigth,ydown]])
+        tree_recursion(ax,n-1,xrigth,ydown,p,r*.5)
+
+      
+plt.close("all") 
+fig, ax = plt.subplots()
+x = 0
+y = 0
+p = np.array([[x,y],[0,0]])
+tree_recursion(ax,7,0,0,p,1.5)
+ax.set_aspect(1.0)
+ax.axis('off')
+plt.show()
+fig.savefig('trees.png')
