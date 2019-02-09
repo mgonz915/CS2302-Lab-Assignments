@@ -1,0 +1,30 @@
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+import math 
+
+def circle(center,rad):
+    n = int(4*rad*math.pi)
+    t = np.linspace(0,6.3,n)
+    x = center[0]+rad*np.sin(t)
+    y = center[1]+rad*np.cos(t)
+    return x,y
+
+def draw_circles_recursively(ax,n,xcenter,ycenter,radius,w):
+    if n>0:
+        center = [xcenter,ycenter]
+        x,y = circle(center,radius)
+        ax.plot(x,y,color='k')
+        draw_circles_recursively(ax,n-1,xcenter-radius*(1-w),ycenter,radius*w,w)
+      
+plt.close("all") 
+fig, ax = plt.subplots()
+xcenter = 0
+ycenter = 0
+draw_circles_recursively(ax, 50, xcenter,ycenter, 1000,.9)
+ax.set_aspect(1.0)
+ax.axis('off')
+plt.show()
+fig.savefig('circles.png')
+
