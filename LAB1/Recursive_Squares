@@ -1,32 +1,29 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import math 
 
-#method to create a circle
-def circle(center,rad):
-    n = int(4*rad*math.pi)
-    t = np.linspace(0,6.3,n)
-    x = center[0]+rad*np.sin(t)
-    y = center[1]+rad*np.cos(t)
-    return x,y
-
-def draw_circles_recursively(ax,n,xcenter,ycenter,radius,w):
+def draw_squares_recursively(ax,n,x,y,r):
     if n>0:
-        #Create and plot a circle based on its center point and radius
-        center = [xcenter,ycenter]
-        x,y = circle(center,radius)
-        ax.plot(x,y,color='k')
-        #recursive call with modified inputs
-        draw_circles_recursively(ax,n-1,xcenter-radius*(1-w),ycenter,radius*w,w)
+       # Create 4 variables with coordinates for square corners
+       xleft =x-r
+       xrigth =x+r
+       ytop =y+r
+       ybot =y-r
+       #store and plot square
+       p = np.array([[xleft,ybot],[xleft,ytop],[xrigth,ytop],[xrigth,ybot],[xleft,ybot]])
+       ax.plot(p[:,0],p[:,1],color='k')
+       #recursive calls on each square corner
+       draw_squares_recursively(ax,n-1,xleft,ybot,r/2)
+       draw_squares_recursively(ax,n-1,xleft,ytop,r/2)
+       draw_squares_recursively(ax,n-1,xrigth,ytop,r/2)
+       draw_squares_recursively(ax,n-1,xrigth,ybot,r/2)
+
       
 plt.close("all") 
-fig, ax = plt.subplots()
-xcenter = 0
-ycenter = 0
-draw_circles_recursively(ax, 50, xcenter,ycenter, 1000,.9)
+fig, ax = plt.subplots() 
+center = 500
+draw_squares_recursively(ax,2,0,0,500)
 ax.set_aspect(1.0)
 ax.axis('off')
 plt.show()
-fig.savefig('circles.png')
-
+fig.savefig('circles&squares.png')
 
