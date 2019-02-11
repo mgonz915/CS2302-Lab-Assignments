@@ -1,9 +1,8 @@
-
-
 import matplotlib.pyplot as plt
 import numpy as np
 import math 
 
+#method to create a circle
 def circle(center,rad):
     n = int(4*rad*math.pi)
     t = np.linspace(0,6.3,n)
@@ -13,9 +12,11 @@ def circle(center,rad):
 
 def draw_circles_recursively(ax,n,xcenter,ycenter,radius,w):
     if n>0:
+        #Create and plot a circle based on its center point and radius
         center = [xcenter,ycenter]
         x,y = circle(center,radius)
         ax.plot(x,y,color='k')
+        #recursive call with modified inputs
         draw_circles_recursively(ax,n-1,xcenter-radius*(1-w),ycenter,radius*w,w)
       
 plt.close("all") 
