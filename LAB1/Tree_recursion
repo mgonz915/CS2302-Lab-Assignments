@@ -1,18 +1,22 @@
-
-
 import matplotlib.pyplot as plt
 import numpy as np
 
-
 def tree_recursion(ax,n,x,y,p,r):
     if n>0:
+        
+        #plot line that is stored in "p" array
         ax.plot(p[:,0],p[:,1],color='k')
+        
+        #create variables to store new coordinate values for new branches
         xleft = x-r
         xrigth = x+r
         ydown = y-1
-    
+        
+        #update "p" array with left coordinates and call method
         p = np.array([[x,y],[xleft,ydown]])
         tree_recursion(ax,n-1,xleft,ydown,p,r*.5)
+        
+        #update "p" array with right coordinates and call method
         p = np.array([[x,y],[xrigth,ydown]])
         tree_recursion(ax,n-1,xrigth,ydown,p,r*.5)
 
