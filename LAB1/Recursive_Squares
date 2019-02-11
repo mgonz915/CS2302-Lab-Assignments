@@ -1,17 +1,17 @@
-
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 def draw_squares_recursively(ax,n,x,y,r):
     if n>0:
-       # i1 = [1,2,3,0,1]
+       # Create 4 variables with coordinates for square corners
        xleft =x-r
        xrigth =x+r
        ytop =y+r
        ybot =y-r
+       #store and plot square
        p = np.array([[xleft,ybot],[xleft,ytop],[xrigth,ytop],[xrigth,ybot],[xleft,ybot]])
        ax.plot(p[:,0],p[:,1],color='k')
+       #recursive calls on each square corner
        draw_squares_recursively(ax,n-1,xleft,ybot,r/2)
        draw_squares_recursively(ax,n-1,xleft,ytop,r/2)
        draw_squares_recursively(ax,n-1,xrigth,ytop,r/2)
@@ -26,4 +26,7 @@ ax.set_aspect(1.0)
 ax.axis('off')
 plt.show()
 fig.savefig('circles&squares.png')
+
+
+
 
