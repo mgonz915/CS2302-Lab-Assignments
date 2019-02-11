@@ -1,9 +1,8 @@
-
-
 import matplotlib.pyplot as plt
 import numpy as np
 import math
 
+#method to create a circle
 def circle(center,rad):
     n = int(4*rad*math.pi)
     t = np.linspace(0,6.3,n)
@@ -14,14 +13,21 @@ def circle(center,rad):
 
 def circle_in_circle(ax,n,xcenter,ycenter,radius):
     if n>0:
+        #Create and plot a circle based on its center point and radius
         center = [xcenter,ycenter]
         x,y = circle(center,radius)
         ax.plot(x,y,color='k')
+        
+        # Create 4 variables with new circle coordinates
         xleft = xcenter + (radius*(2/3))
         xrigth = xcenter - (radius*(2/3))
         ytop = ycenter + (radius*(2/3))
         ybot = ycenter - (radius*(2/3))
+        
+        #reduce radius by 3
         radius = radius/3
+        
+        #recursive calls for the 5 circles inside the first circle
         circle_in_circle(ax,n-1,xcenter,ycenter,radius)
         circle_in_circle(ax,n-1,xleft,ycenter,radius)
         circle_in_circle(ax,n-1,xrigth,ycenter,radius)
@@ -36,5 +42,4 @@ circle_in_circle(ax, 3, xcenter,ycenter, 1000)
 ax.set_aspect(1.0)
 ax.axis('off')
 plt.show()
-fig.savefig('circles_in_circles.png')        
-        
+fig.savefig('circles_in_circles.png')             
