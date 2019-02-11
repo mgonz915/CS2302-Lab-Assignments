@@ -25,5 +25,5 @@ draw_squares_recursively(ax,2,0,0,500)
 ax.set_aspect(1.0)
 ax.axis('off')
 plt.show()
-fig.savefig('circles&squares.png')
+fig.savefig('squares.png')
 
