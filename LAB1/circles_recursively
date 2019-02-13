@@ -1,3 +1,10 @@
+#Author: Michael Gonzalez
+#Course: CS 2302 Data Structures
+#Lab 1 Part 2
+#TA: Anindita Nath
+#Purpose:The purpose of this part was to create a recursive method that will draw 
+#circles scaling down in size and distance from a previous circle 
+
 import matplotlib.pyplot as plt
 import numpy as np
 import math 
