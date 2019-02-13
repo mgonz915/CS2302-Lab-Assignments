@@ -1,3 +1,10 @@
+#Author: Michael Gonzalez
+#Course: CS 2302 Data Structures
+#Lab 1 Part 4
+#TA: Anindita Nath
+#Purpose: The purpose of this part was to create a recursive call that will 
+#draw a a series of circles in a "t" format inside an existing cirlce n times
+
 import matplotlib.pyplot as plt
 import numpy as np
 import math
