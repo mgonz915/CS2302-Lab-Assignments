@@ -1,3 +1,9 @@
+#Author: Michael Gonzalez
+#Course: CS 2302 Data Structures
+#Lab 1 Part 3
+#TA: Anindita Nath
+#Purpose:the purpose of this part was to create a recursive method that will draw a a binary tree n times
+
 import matplotlib.pyplot as plt
 import numpy as np
 
