@@ -1,3 +1,10 @@
+#Author: Michael Gonzalez
+#Course: CS 2302 Data Structures
+#Lab 1 Part 1
+#TA: Anindita Nath
+#Purpose: the purpose of this part is to create a recursive method that will create squares and
+#will place them on the corners of a previous square and reduce their size n times.
+
 import matplotlib.pyplot as plt
 import numpy as np
 
