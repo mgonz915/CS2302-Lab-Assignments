@@ -1,0 +1,154 @@
+#Author: Michael Gonzalez
+#Course: CS 2302 Data Structures
+#Lab 2 Part 2 
+#TA: Anindita Nath
+#Purpose:The purpose of this part is to sort a Linked List using the Merge sort Method
+#and return the middle elemnt.
+#also we need to measure the number of comparisons Merge sort makes to compare it to other sorting methods
+
+import random 
+
+
+#Node Functions
+class Node(object):
+    # Constructor
+    def __init__(self, item, next=None):  
+        self.item = item
+        self.next = next 
+
+#List Functions
+class List(object):   
+    # Constructor
+    def __init__(self): 
+        self.head = None
+        self.tail = None
+        
+def IsEmpty(L):  
+    return L.head == None     
+        
+def Append(L,x): 
+    # Inserts x at end of list L
+    if IsEmpty(L):
+        L.head = Node(x)
+        L.tail = L.head
+    else:
+        L.tail.next = Node(x)
+        L.tail = L.tail.next    
+        
+def Print(L):
+    # Prints list L's items in order using a loop
+    temp = L.head
+    while temp is not None:
+        print(temp.item, end=' ')
+        temp = temp.next
+    print()  # New line 
+    
+    
+def Copy(L):
+    Xcopy = List()
+    temp = L.head
+    while temp is not None:
+        Append(Xcopy,temp.item)
+        temp = temp.next
+    return Xcopy
+    
+
+def ElementAt(L,mid):
+    if IsEmpty(L):
+        return None
+    else:
+        temp = L.head
+        while mid is not 0:
+            temp = temp.next
+            mid -= 1
+        return temp.item
+   
+         
+def GetLength(L):
+    if IsEmpty(L):
+        return 0
+    else:
+        count = 0
+        temp = L.head
+        while temp is not None:
+            count += 1
+            temp = temp.next
+        return count  
+
+def mergeLists(l1, l2):
+    temp = None
+    if l1 is None:
+        
+        return l2
+    if l2 is None:
+        
+        return l1
+    if l1.item <= l2.item:
+        temp = l1
+        temp.next = mergeLists(l1.next, l2)
+        
+    else:
+        temp = l2
+        temp.next = mergeLists(l1, l2.next)
+    return temp
+
+# Defining function which will sort the linked list using mergeSort
+def mergeSort(head):
+    if head is None or head.next is None:
+        return head
+    l1, l2 = divideLists(head)
+    l1 = mergeSort(l1)
+    l2 = mergeSort(l2)
+    
+    head = mergeLists(l1, l2)
+    return head
+
+# Defining function which will divide a linked list into two equal linked lists
+def divideLists(head):
+    slow = head                     # slow is a pointer to reach the mid of linked list
+    fast = head                     # fast is a pointer to reach the end of the linked list
+    if fast:
+        fast = fast.next 
+        
+    while fast:
+        fast = fast.next            # fast is incremented twice while slow is incremented once per loop
+        if fast:
+            fast = fast.next
+            slow = slow.next
+        
+    mid = slow.next
+    slow.next = None
+    return head, mid
+            
+def Median(L):
+    C = Copy(L)
+    C.head= mergeSort(C.head)
+    Print(C)
+    return ElementAt(C,GetLength(C)//2)                
+               
+
+def genRanList(n):
+    L = List()
+    for i in range(n):
+        x = random.randrange(0, 101, 1)
+        Append(L,x)
+    return L
+    
+size = 8
+
+
+
+testList = genRanList(size)
+#testList = List()  example from Dr. Flores
+#Append(testList,30)
+#Append(testList,70)
+#Append(testList,20)
+#Append(testList,10)
+#Append(testList,40)
+#Append(testList,60)
+#Append(testList,50)
+Print(testList)
+
+x = Median(testList)
+print(x)
+
