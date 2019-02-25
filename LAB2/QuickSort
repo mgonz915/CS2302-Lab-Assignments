@@ -1,0 +1,159 @@
+#Author: Michael Gonzalez
+#Course: CS 2302 Data Structures
+#Lab 2 Part 3
+#TA: Anindita Nath
+#Purpose:The purpose of this part is to sort a Linked List using the Quick sort Method
+#and return the middle elemnt.
+#also we need to measure the number of comparisons Quick sort makes to compare it to other sorting methods
+
+import random 
+
+
+
+#Node Functions
+class Node(object):
+    # Constructor
+    def __init__(self, item, next=None):  
+        self.item = item
+        self.next = next 
+
+def PrintNodes(N):
+    if N != None:
+        print(N.item, end=' ')
+        PrintNodes(N.next)
+        
+def PrintNodesReverse(N):
+    if N != None:
+        PrintNodesReverse(N.next)
+        print(N.item, end=' ')
+
+#List Functions
+class List(object):   
+    # Constructor
+    def __init__(self): 
+        self.head = None
+        self.tail = None
+        
+def IsEmpty(L):  
+    return L.head == None     
+        
+def Append(L,x): 
+    # Inserts x at end of list L
+    if IsEmpty(L):
+        L.head = Node(x)
+        L.tail = L.head
+    else:
+        L.tail.next = Node(x)
+        L.tail = L.tail.next    
+        
+def Print(L):
+    # Prints list L's items in order using a loop
+    temp = L.head
+    while temp is not None:
+        print(temp.item, end=' ')
+        temp = temp.next
+    print()  # New line 
+    
+    
+def Copy(L):
+    Xcopy = List()
+    temp = L.head
+    while temp is not None:
+        Append(Xcopy,temp.item)
+        temp = temp.next
+    return Xcopy
+    
+
+def ElementAt(L,mid):
+    if IsEmpty(L):
+        return None
+    else:
+        temp = L.head
+        while mid is not 0:
+            temp = temp.next
+            mid -= 1
+        return temp.item
+   
+         
+def GetLength(L):
+    if IsEmpty(L):
+        return 0
+    else:
+        count = 0
+        temp = L.head
+        while temp is not None:
+            count += 1
+            temp = temp.next
+        return count  
+    
+def quickSort(L):
+    if IsEmpty(L):
+        return L
+    LeftSide = List()
+    RigthSide = List()
+    piv = L.head.item
+    temp = L.head.next
+    
+    while temp is not None:
+        if piv > temp.item:
+            Append(LeftSide,temp.item)
+            temp = temp.next
+        else:
+            
+            Append(RigthSide,temp.item)
+            temp = temp.next
+            
+    newLeft = quickSort(LeftSide)
+    newRigth =  quickSort(RigthSide)
+    
+    Append(newLeft,piv)
+    
+    return Concate(newLeft,newRigth)
+
+def Concate(L1,L2):
+    
+    if IsEmpty(L1):
+        return L2
+    elif IsEmpty (L2):
+        return L1
+    else:
+        L1.tail.next = L2.head
+        L1.tail = L2.tail
+    return L1
+              
+            
+def Median(L):
+    C = Copy(L)
+    Y= quickSort(C)
+    Print(Y)
+    return ElementAt(Y,GetLength(Y)//2)                
+               
+
+def genRanList(n):
+    L = List()
+    for i in range(n):
+        x = random.randrange(0, 101, 1)
+        Append(L,x)
+    return L
+
+
+    
+size = 5
+testList = genRanList(size)
+#testList = List() # example from Dr. Flores
+#Append(testList,30)
+#Append(testList,70)
+#Append(testList,20)
+#Append(testList,10)
+#Append(testList,40)
+#Append(testList,60)
+#Append(testList,50)
+Print(testList)
+
+
+x = Median(testList)
+
+print(x)
+
+
+
