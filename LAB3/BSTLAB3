@@ -1,0 +1,382 @@
+#Author: Michael Gonzalez
+#Course: CS 2302 Data Structures
+#Lab 3
+#TA: Anindita Nath
+#Purpose:the purpose of this lab is to modify the code given in class and implement various methods.
+#1. Display the binary search tree as a figure
+#2. Iterative version of the search operation.
+#3. Building a balanced binary search tree given a sorted list as input.
+#4. Extracting the elements in a binary search tree into a sorted list.
+#5. Printing the elements in a binary tree ordered by depth.
+# Last modified February 27, 2019
+
+import matplotlib.pyplot as plt
+import numpy as np
+import math
+
+
+class BST(object):
+    # Constructor
+    def __init__(self, item, left=None, right=None):  
+        self.item = item
+        self.left = left 
+        self.right = right      
+        
+def Insert(T,newItem):
+    if T == None:
+        T =  BST(newItem)
+    elif T.item > newItem:
+        T.left = Insert(T.left,newItem)
+    else:
+        T.right = Insert(T.right,newItem)
+    return T
+
+def Delete(T,del_item):
+    if T is not None:
+        if del_item < T.item:
+            T.left = Delete(T.left,del_item)
+        elif del_item > T.item:
+            T.right = Delete(T.right,del_item)
+        else:  # del_item == T.item
+            if T.left is None and T.right is None: # T is a leaf, just remove it
+                T = None
+            elif T.left is None: # T has one child, replace it by existing child
+                T = T.right
+            elif T.right is None:
+                T = T.left    
+            else: # T has two chldren. Replace T by its successor, delete successor
+                m = Smallest(T.right)
+                T.item = m.item
+                T.right = Delete(T.right,m.item)
+    return T
+
+def maxDepth(T): 
+    if T is None: 
+        return 0 ;  
+  
+    else : 
+  
+        # Compute the depth of each subtree 
+        lDepth = maxDepth(T.left) 
+        rDepth = maxDepth(T.right) 
+  
+        # Use the larger one 
+        if (lDepth > rDepth): 
+            return lDepth+1
+        else: 
+            return rDepth+1         
+        
+def InOrder(T):
+    # Prints items in BST in ascending order
+    if T is not None:
+        InOrder(T.left)
+        print(T.item,end = ' ')
+        InOrder(T.right)
+  
+def InOrderD(T,space):
+    # Prints items and structure of BST
+    if T is not None:
+        InOrderD(T.right,space+'   ')
+        print(space,T.item)
+        InOrderD(T.left,space+'   ')
+  
+#def DrawTree(T):
+        
+    
+def SmallestL(T):
+    # Returns smallest item in BST. Returns None if T is None
+    if T is None:
+        return None
+    while T.left is not None:
+        T = T.left
+    return T   
+ 
+def Smallest(T):
+    # Returns smallest item in BST. Error if T is None
+    if T.left is None:
+        return T
+    else:
+        return Smallest(T.left)
+
+def Largest(T):
+    if T.right is None:
+        return T
+    else:
+        return Largest(T.right)   
+
+def Find(T,k):
+    # Returns the address of k in BST, or None if k is not in the tree
+    if T is None or T.item == k:
+        return T
+    if T.item<k:
+        return Find(T.right,k)
+    return Find(T.left,k)
+    
+def PrintRevserse(T):
+    if T is not None:
+        PrintRevserse(T.right)
+        print(T.item,end = ' ')
+        PrintRevserse(T.left)
+        
+def CountNodes(T):
+    Count = 0
+    if T is not None:
+        Count += 1
+    else:
+        return 0
+    return Count + CountNodes(T.right) + CountNodes(T.left)
+    
+
+def FindAndPrint(T,k):
+    f = Find(T,k)
+    if f is not None:
+        print(f.item,'found')
+    else:
+        print(k,'not found')
+        
+def SumTree(T):
+    if T is None:
+        return 0
+    return T.item + SumTree(T.left) + SumTree(T.right) 
+
+
+#that receives a reference to the root of a binary search 
+#tree T and an item k and returns the depth at which k is
+# stored in the tree or -1 if k is not in the tree. For example, 
+#if k is stored in the root, the function should return 0, if k is stored
+# in one of the root's children, it should return 1, and so on.
+    
+def FindDepth(T,k):
+    count = 0
+    while T is not None:
+        if T.item == k:
+            return count
+        elif T.item<k:
+            T=T.right
+            count += 1
+        else:
+            T=T.left
+            count += 1   
+    return -1
+            
+#    if T is None or T.item == k:
+#        return 0
+#    if T.item<k:
+#        return 1 + FindDepth(T.right,k)
+#    if T.left.item>k:
+#        return 1 + FindDepth(T.left,k)
+#    
+    
+#That receives a reference to the root of a binary search tree T 
+#and an integer d and returns the sum of items in the tree that are stored in
+# nodes with depth d. Hint: if the tree is empty, the sum is 0, if d is 0, the
+# sum is the root's item, otherwise the sum is the sum of the items with 
+#depth d-1 in the left subtree plus the sum of the items with depth d-1 in the 
+#right subtree.    
+    
+def SumAtDepth(T,d):
+    if T is None:
+        return 0
+    if d is 0:
+        return T.item
+    return T.item + SumAtDepth(T.left,d-1) + SumAtDepth(T.right,d-1)
+#############################################################################
+#                                LAB 3 Start
+
+
+########################################################
+#1. Display the binary search tree as a figure
+
+def DispBST(ax,x,y,p,r,T):
+    if T is not None:
+        
+        #plot circle that is stored in "p" array
+        drawCircle(x,y,1)
+        #plot the item stored at the current node
+        ax.annotate(T.item, (x-.7,y-.5))
+        y=y-1
+        #plot line that is stored in "p" array
+        ax.plot(p[:,0],p[:,1],color='k')
+        
+        
+        #create variables to store new coordinate values for new branches
+        xleft = x-r
+        xrigth = x+r
+        ydown = y-10
+        
+        #update "p" array and call method with the left tree nodes
+        p = np.array([[x,y],[xleft,ydown]])
+        DispBST(ax,xleft-1,ydown-.5,p,r*.5,T.left)
+        
+        #update "p" array and call method with the right tree nodes
+        p = np.array([[x,y],[xrigth,ydown]])
+        DispBST(ax,xrigth+1,ydown-.5,p,r*.5,T.right)
+
+#method to plot a circle
+def drawCircle(x,y,r):
+    center = [x,y]
+    Cx,Cy = circle(center,r)
+    ax.plot(Cx,Cy,color='k')
+    ax.fill(Cx, Cy,'w')
+
+
+#method to create a circle
+def circle(center,rad):
+    n = int(4*rad*math.pi)
+    t = np.linspace(0,6.3,n)
+    x = center[0]+rad*np.sin(t)
+    y = center[1]+rad*np.cos(t)
+    return x,y
+
+
+    
+########################################################
+#2. Iterative version of the search operation.
+
+def IterativeSearch(T,k):
+    while T is not None:
+        if T.item == k:
+            return T
+        elif T.item<k:
+            T=T.right
+        else:
+            T=T.left 
+    return None
+
+########################################################
+#3. Building a balanced binary search tree given a sorted list as input.
+
+  
+def BuildTreeSorted(L):
+    if len(L) >= 1:
+        median = L[len(L)//2]
+        T = BST(median)
+        LList = L[:((len(L)//2))]
+        RList = L[((len(L)//2)+1):]
+        T.left = BuildTreeSorted(LList)
+        T.right = BuildTreeSorted(RList)   
+        return T
+    
+########################################################
+#4. Extracting the elements in a binary search tree into a sorted list.
+
+def MakeList(T):
+    if T is not None:
+        
+        MakeList(T.left)
+        List.append(T.item)
+        MakeList(T.right)
+    
+########################################################
+#5. Printing the elements in a binary tree ordered by depth.
+        
+def printDepthOrder(root): 
+    h = maxDepth(T)
+    for i in range(h+1):
+        if i>0:
+            print("Keys at depth ",i-1,":",end=" ")
+        printGivenLevel(root, i) 
+        print()
+# Print nodes at a given level */
+def printGivenLevel(root,level):  
+    if root is None: 
+        return 
+    if level == 1: 
+        print(root.item,end=" ") 
+    elif (level > 1):
+        printGivenLevel(root.left, level-1); 
+        printGivenLevel(root.right, level-1);   
+
+
+########################################################
+        
+# Code to test the functions above
+T = None
+List =[]
+A = [12,4,20,2,8,15,25]
+B = [2,4,8,12,15,20,25,26]
+C = [10,4,15,2,8,12,18,1,3,5,9,7] 
+
+
+for a in C:
+    T = Insert(T,a)
+    
+#InOrder(T)
+print()
+InOrderD(T,'')
+print()
+#PrintRevserse(T)
+print()
+
+#1
+plt.close("all") 
+fig, ax = plt.subplots()
+x = 0
+y = 0
+p = np.array([[x,y],[0,0]])
+DispBST(ax,0,0,p,10,T)
+ax.set_aspect(1.0)
+ax.axis('off')
+plt.show()
+fig.savefig('BST.png')
+
+#2
+K = IterativeSearch(T,2)
+print(K)
+
+#3
+ST = BuildTreeSorted(B)
+#DispBST(ax,0,0,p,10,ST)
+InOrderD(ST,'')
+print()
+
+#4
+MakeList(T)
+print(List)
+
+#5
+printDepthOrder(T)
+#
+
+
+#PrintRevserse(T)
+#print()
+#x = CountNodes(T)
+#print(x)
+
+#y = SumTree(T)
+#print(y)
+#
+#z = FindDepth(T,4)
+#print("depth",z)
+#
+#aa = SumAtDepth(T,3)
+#print(aa)
+
+#print(SmallestL(T).item)
+#print(Smallest(T).item)
+#
+#FindAndPrint(T,40)
+#FindAndPrint(T,110)
+#
+#n=60
+#print('Delete',n,'Case 1, deleted node is a leaf')
+#T = Delete(T,n) #Case 1, deleted node is a leaf
+#InOrderD(T,'')
+#print('####################################')
+#
+#n=90      
+#print('Delete',n,'Case 2, deleted node has one child')      
+#T = Delete(T,n) #Case 2, deleted node has one child
+#InOrderD(T,'')
+#print('####################################')
+#
+#n=70      
+#print('Delete',n,'Case 3, deleted node has two children') 
+#T = Delete(T,n) #Case 3, deleted node has two children
+#InOrderD(T,'')
+#
+#n=40      
+#print('Delete',n,'Case 3, deleted node has two children') 
+#T = Delete(T,n) #Case 3, deleted node has two children
+#InOrderD(T,'')
